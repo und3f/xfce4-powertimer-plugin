@@ -1,0 +1,51 @@
+dnl xfce4-powertimer-plugin - Power timer for the Xfce4
+dnl
+dnl 2022 Serhii Zasenko <sergii@zasenko.name>
+dnl
+
+m4_define([powertimer_version], [0.1.0])
+
+dnl ***************************
+dnl *** Initialize autoconf ***
+dnl ***************************
+AC_COPYRIGHT([Copyright (c) 2022 Serhii Zasenko. All rights reserved.])
+AC_INIT([xfce4-powertimer-plugin], [powertimer_version], [https://bugzilla.xfce.org/], [xfce4-powertimer-plugin])
+AC_PREREQ([2.50])
+AC_CANONICAL_TARGET()
+
+
+dnl ***************************
+dnl *** Initialize automake ***
+dnl ***************************
+AM_INIT_AUTOMAKE(subdir-objects)
+AM_MAINTAINER_MODE()
+
+dnl ********************************
+dnl *** Check for basic programs ***
+dnl ********************************
+AC_PROG_CC
+AC_PROG_INSTALL
+
+dnl Initialize libtool
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
+
+dnl ***********************************
+dnl *** Check for required packages ***
+dnl ***********************************
+XDT_CHECK_PACKAGE([GTHREAD], [gthread-2.0], [2.4.0])
+XDT_CHECK_PACKAGE([GTK], [gtk+-3.0], [3.20.0])
+XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-2], [4.12.0])
+XDT_CHECK_PACKAGE([LIBXFCE4PANEL], [libxfce4panel-2.0], [4.12.0])
+XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.12.0])
+
+
+AC_CONFIG_FILES([
+	Makefile
+	src/Makefile
+	icons/Makefile
+	icons/32x32/Makefile
+	icons/scalable/Makefile
+])
+
+AC_OUTPUT

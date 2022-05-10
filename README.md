@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/github/license/und3f/xfce4-powertimer-plugin)](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/blob/master/COPYING)
+[![License](https://img.shields.io/badge/License-GPL--3.0-informational)](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/blob/master/COPYING)
 
 # xfce4-power-timer-plugin
 
@@ -8,7 +8,7 @@ xfce4-powertimer-plugin is a power timer panel plugin that shuts down computer a
 
 ### Homepage
 
-[xfce4-powertimer-plugin documentation](https://github.com/und3f/xfce4-powertimer-plugin/wiki)
+[xfce4-powertimer-plugin documentation](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/wikis/home)
 
 ### Changelog
 
@@ -43,5 +43,5 @@ From release tarball:
 
 ### Reporting Bugs
 
-Visit the [reporting bugs](https://github.com/und3f/xfce4-powertimer-plugin/issues) page to view currently open bug reports and instructions on reporting new bugs or submitting bugfixes.
+Visit the [reporting bugs](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/issues) page to view currently open bug reports and instructions on reporting new bugs or submitting bugfixes.
 

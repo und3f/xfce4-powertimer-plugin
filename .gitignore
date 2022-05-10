@@ -7,6 +7,7 @@
 .deps
 .libs
 INSTALL
+ChangeLog
 Makefile
 Makefile.in
 aclocal.m4
@@ -19,7 +20,7 @@ libtool
 ltmain.sh
 missing
 mkinstalldirs
-panel-plugin/*.desktop
+*.desktop
 po/.intltool-merge-cache*
 po/Makefile.in.in
 po/POTFILES
@@ -32,3 +33,4 @@ config.status
 config.sub
 configure
 configure.ac
+xfce4-powertimer-plugin-*/

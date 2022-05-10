@@ -17,7 +17,9 @@ ChangeLog: Makefile
 
 EXTRA_DIST =            \
         README.md		\
-        NEWS
+        NEWS			\
+		include/*.h		\
+		powertimer.desktop
 
 DISTCLEANFILES =						\
 	aclocal.m4							\

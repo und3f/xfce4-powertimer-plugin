@@ -4,8 +4,7 @@ plugin_LTLIBRARIES = libpowertimer.la
 STRICT_CFLAGS=-Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wconversion
 
 libpowertimer_la_CFLAGS =	\
-	-I../include 			\
-	-I../include/power-timer\
+	-I$(top_srcdir)/include 			\
 	$(LIBXFCE4UTIL_CFLAGS) 	\
 	$(LIBXFCE4UI_CFLAGS) 	\
 	$(LIBXFCE4PANEL_CFLAGS) \

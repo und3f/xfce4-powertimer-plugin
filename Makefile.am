@@ -14,6 +14,7 @@ ChangeLog: Makefile
 		&& mv .changelog.tmp ChangeLog; rm -f .changelog.tmp) \
 		|| (touch ChangeLog; echo 'Git directory not found: installing possibly empty changelog.' >&2)
 
+dist-hook: ChangeLog
 
 EXTRA_DIST =            \
         README.md		\

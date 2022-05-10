@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/github/license/und3f/xfce4-powertimer-plugin)](https://github.com/und3f/xfce4-powertimer-plugin/blob/master/COPYING)
+[![License](https://img.shields.io/github/license/und3f/xfce4-powertimer-plugin)](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/blob/master/COPYING)
 
 # xfce4-power-timer-plugin
 
@@ -12,21 +12,23 @@ xfce4-powertimer-plugin is a power timer panel plugin that shuts down computer a
 
 ### Changelog
 
-See [NEWS](https://github.com/und3f/xfce4-powertimer-plugin/blob/master/NEWS) for details on changes and fixes made in the current release.
+See [NEWS](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/blob/master/NEWS) for details on changes and fixes made in the current release.
 
 ### Source Code Repository
 
-[xfce4-powertimer-plugin source code](https://github.com/und3f/xfce4-powertimer-plugin)
+[xfce4-powertimer-plugin source code](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin)
 
 ### Download a Release Tarball
 
-[xfce4-powertimer-plugin tags](https://github.com/und3f/xfce4-powertimer-plugin)
+[xfce4-powertimer-plugin archive](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin)
+    or
+[xfce4-powertimer-plugin archive](https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin/-/tags)
 
 ### Installation
 
 From source code repository: 
 
-    % cd xfce4-powertimer-plugin-master/
+    % cd xfce4-powertimer-plugin/
     % ./autogen.sh
     % make
     % make install

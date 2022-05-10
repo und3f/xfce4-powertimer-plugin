@@ -7,7 +7,7 @@
 #define TIMER_DEFAULT 45
 #define TIME_SECONDS 60
 
-#define WEBSITE  "http://zasenko.name"
+#define WEBSITE  "https://gitlab.xfce.org/szasenko/xfce4-powertimer-plugin"
 #define ICON_NAME "xfce4-power-timer"
 #define COPYRIGHT "Copyright \xc2\xa9 2022 Serhii Zasenko\n"
 

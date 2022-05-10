@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <gtk/gtk.h>
 
+#include <libxfce4ui/libxfce4ui.h>
 #include <libxfce4util/libxfce4util.h>
 #include <libxfce4panel/libxfce4panel.h>
 #include <libxfce4panel/xfce-panel-convenience.h>
@@ -12,13 +13,6 @@
 
 #include "constants.h"
 #include "power-timer.h"
-
-static void
-xfce_session_logout_notify_error(const gchar *message,
-                                 GError *error)
-{
-    xfce_dialog_show_error(NULL, error, "%s", message);
-}
 
 static void shutdown()
 {
@@ -37,7 +31,7 @@ static void shutdown()
 
     if (proxy == NULL)
     {
-        xfce_dialog_show_error(NULL, err);
+        xfce_dialog_show_error(NULL, err, "Failed to create DBUX proxy");
         g_error_free(err);
         return;
     }
@@ -52,7 +46,7 @@ static void shutdown()
 
     if (!result) {
         if (err != NULL) {
-            xfce_dialog_show_error(NULL, err);
+            xfce_dialog_show_error(NULL, err, "Failed to send shutdown command");
             g_clear_error(&err);
             return;
         }
@@ -83,7 +77,7 @@ void setTimer(PowerTimer *timer, guint timeout)
     printf("previous: %u\n", timer->timerId);
     removeTimer(timer);
 
-    timer->timerId = g_timeout_add_seconds(timeout, timerCallback, timer);
+    timer->timerId = g_timeout_add_seconds(timeout, (GSourceFunc) timerCallback, timer);
 }
 
 PowerTimer *powerTimerNew(XfcePanelPlugin *plugin)

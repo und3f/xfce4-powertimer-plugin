@@ -7,14 +7,12 @@
 #include "configure-dialog.h"
 #include "time-spin-utils.h"
 #include "constants.h"
-#include "power-timer.h"
 
-void configureDialog(XfcePanelPlugin *plugin)
+void configureDialog(GtkWidget *plugin, PowerTimer *powertimer)
 {
-
   GtkWidget *dialog = xfce_titled_dialog_new_with_buttons(
       _("Set power timer"),
-      GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(plugin))),
+      GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(powertimer->plugin))),
       GTK_DIALOG_DESTROY_WITH_PARENT,
       _("Set timer"), GTK_RESPONSE_APPLY,
       _("Discard"), GTK_RESPONSE_CANCEL,
@@ -39,10 +37,10 @@ void configureDialog(XfcePanelPlugin *plugin)
 
   gint response = gtk_dialog_run(GTK_DIALOG(dialog));
   fprintf(stderr, "response %u\n", response);
-  if (response == GTK_RESPONSE_APPLY) {
-    gint value = gtk_spin_button_get_value_as_int(spin_button);
-    printf("Set callback!\n");
-    setTimer(plugin->priv, (guint)value * TIME_SECONDS);
+  if (response == GTK_RESPONSE_APPLY)
+  {
+    gint value = gtk_spin_button_get_value_as_int((GtkSpinButton *)spin_button);
+    setTimer(powertimer, (guint)value * TIME_SECONDS);
   }
 
   gtk_widget_destroy(dialog);

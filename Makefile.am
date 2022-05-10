@@ -16,10 +16,8 @@ ChangeLog: Makefile
 
 
 EXTRA_DIST =            \
-        AUTHORS         \
-        COPYING         \
-        NEWS            \
-        README.md
+        README.md		\
+        NEWS
 
 DISTCLEANFILES =						\
 	aclocal.m4							\

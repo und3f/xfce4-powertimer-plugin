@@ -8,10 +8,8 @@ gint time_spin_input(GtkSpinButton *spin_button, gdouble *new_val)
   const gchar *text;
   gchar **str;
   gboolean found = FALSE;
-  gint hours;
-  gint minutes;
-  gchar *endh;
-  gchar *endm;
+  long hours, minutes;
+  gchar *endh, *endm;
 
   text = gtk_entry_get_text(GTK_ENTRY(spin_button));
   str = g_strsplit(text, ":", 2);
@@ -24,7 +22,7 @@ gint time_spin_input(GtkSpinButton *spin_button, gdouble *new_val)
         0 <= hours && hours < 24 &&
         0 <= minutes && minutes < 60)
     {
-      *new_val = hours * 60 + minutes;
+      *new_val = (gdouble)(hours * 60 + minutes);
       found = TRUE;
     }
   }

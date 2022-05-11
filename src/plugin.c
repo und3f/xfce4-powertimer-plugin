@@ -18,6 +18,8 @@ static gboolean sizeChanged(XfcePanelPlugin *plugin,
 
 static void powertimer_constructor(XfcePanelPlugin *plugin)
 {
+    xfce_textdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
+
     PowerTimer *powerTimer = powerTimerNew(plugin);
 
     printf("Value %u\n", powerTimer->timerId);

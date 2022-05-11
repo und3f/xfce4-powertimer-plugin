@@ -8,7 +8,7 @@
 #include "time-spin-utils.h"
 #include "constants.h"
 
-void configureDialog(GtkWidget *plugin, PowerTimer *powertimer)
+void configureDialog(PowerTimer *powertimer)
 {
   GtkWidget *dialog = xfce_titled_dialog_new_with_buttons(
       _("Set power timer"),

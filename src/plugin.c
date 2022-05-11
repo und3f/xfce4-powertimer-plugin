@@ -18,6 +18,8 @@ static gboolean sizeChanged(XfcePanelPlugin *plugin,
 
 static void powertimer_constructor(XfcePanelPlugin *plugin)
 {
+    xfce_textdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
+
     PowerTimer *powerTimer = powerTimerNew(plugin);
 
     printf("Value %u\n", powerTimer->timerId);
@@ -36,17 +38,17 @@ static void powertimer_constructor(XfcePanelPlugin *plugin)
     g_signal_connect(G_OBJECT(plugin), "orientation-changed",
                      G_CALLBACK(orientationChanged), powerTimer);
 
-    g_signal_connect(G_OBJECT(plugin), "button_press_event",
-                     G_CALLBACK(configureDialog), powerTimer);
-
     /* show the about menu item and connect signal */
     xfce_panel_plugin_menu_show_about(plugin);
     g_signal_connect(G_OBJECT(plugin), "about",
                      G_CALLBACK(aboutDialog), powerTimer);
 
     xfce_panel_plugin_menu_show_configure(plugin);
-    g_signal_connect(plugin, "configure-plugin",
+    g_signal_connect_swapped(plugin, "configure-plugin",
                      G_CALLBACK(configureDialog), powerTimer);
+    g_signal_connect_swapped(G_OBJECT(plugin), "button_press_event",
+                     G_CALLBACK(configureDialog), powerTimer);
+
 }
 
 XFCE_PANEL_PLUGIN_REGISTER(powertimer_constructor)

@@ -3,6 +3,6 @@
 
 #include "power-timer.h"
 
-void configureDialog(GtkWidget *panel, PowerTimer *powertimer);
+void configureDialog(PowerTimer *powertimer);
 
 #endif

@@ -1,8 +1,7 @@
-@SET_MAKE@
-
 SUBDIRS =               \
         src				\
-        icons
+        icons			\
+        po
 
 ditsclean-local:
 	rm -rf *.cache *~
@@ -16,25 +15,15 @@ ChangeLog: Makefile
 
 dist-hook: ChangeLog
 
-EXTRA_DIST =            \
-        README.md		\
-        NEWS			\
-		include			\
-		powertimer.desktop
+EXTRA_DIST =            	\
+        README.md			\
+		include				\
+		powertimer.desktop	\
+		intltool-extract.in	\
+		intltool-merge.in	\
+		intltool-update.in
 
 DISTCLEANFILES =						\
-	aclocal.m4							\
-	compile								\
-	config.guess						\
-	config.h.in							\
-	config.sub							\
-	configure							\
-	configure.ac						\
-	depcomp								\
-	install-sh							\
-	ltmain.sh							\
-	missing								\
-	mkinstalldirs						\
 	intltool-extract					\
 	intltool-merge						\
 	intltool-update

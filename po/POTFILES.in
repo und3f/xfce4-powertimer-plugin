@@ -1,0 +1,3 @@
+src/plugin.c
+src/power-timer.c
+powertimer.desktop.in

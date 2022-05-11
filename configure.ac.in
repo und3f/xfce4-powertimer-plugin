@@ -11,6 +11,7 @@ dnl ***************************
 AC_COPYRIGHT([Copyright (c) 2022 Serhii Zasenko. All rights reserved.])
 AC_INIT([xfce4-powertimer-plugin], [powertimer_version], [https://bugzilla.xfce.org/], [xfce4-powertimer-plugin])
 AC_PREREQ([2.50])
+AC_CANONICAL_TARGET()
 
 dnl ***************************
 dnl *** Initialize automake ***
@@ -24,10 +25,16 @@ dnl ********************************
 AC_PROG_CC()
 AC_PROG_LD()
 AC_PROG_INSTALL()
+IT_PROG_INTLTOOL([0.35.0])
 
 dnl Initialize libtool
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
+
+dnl ******************************
+dnl *** Check for i18n support ***
+dnl ******************************
+XDT_I18N([@LINGUAS@])
 
 dnl ***********************************
 dnl *** Check for required packages ***
@@ -44,6 +51,7 @@ AC_CONFIG_FILES([
 	icons/Makefile
 	icons/32x32/Makefile
 	icons/scalable/Makefile
+	po/Makefile.in
 ])
 
 AC_OUTPUT

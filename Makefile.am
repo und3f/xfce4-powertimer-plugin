@@ -15,10 +15,18 @@ ChangeLog: Makefile
 
 dist-hook: ChangeLog
 
+#
+# Desktop file
+#
+desktopdir = $(datadir)/xfce4/panel/plugins
+desktop_in_files = powertimer.desktop.in
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
+
 EXTRA_DIST =            	\
         README.md			\
 		include				\
-		powertimer.desktop	\
+		$(desktop_in_files) \
 		intltool-extract.in	\
 		intltool-merge.in	\
 		intltool-update.in
@@ -26,4 +34,5 @@ EXTRA_DIST =            	\
 DISTCLEANFILES =						\
 	intltool-extract					\
 	intltool-merge						\
-	intltool-update
+	intltool-update						\
+	$(desktop_DATA)

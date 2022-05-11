@@ -1,3 +1,5 @@
 src/plugin.c
 src/power-timer.c
+src/about-dialog.c
+src/configure-dialog.c
 powertimer.desktop.in

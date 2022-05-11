@@ -1,9 +1,9 @@
 [Xfce Panel]
 Type=X-XFCE-PanelPlugin
 Encoding=UTF-8
-Name=Power Timer
-Comment=Set shutdown timer
+_Name=Power Timer
+_Comment=Set power timer
 Icon=xfce4-power-timer
-X-XFCE-Internal=false
+X-XFCE-Internal=FALSE
 X-XFCE-Module=powertimer
 X-XFCE-API=2.0

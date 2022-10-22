@@ -5,12 +5,15 @@ typedef struct
 {
   XfcePanelPlugin *plugin;
   GtkWidget *ebox, *hbox;
-  GtkWidget *icon, *label;
+  GtkWidget *icon, *progressBar;
+  GtkWidget *stopTimer;
   guint timerId;
+
+  GDateTime *poweroffTime;
 } PowerTimer;
 
-PowerTimer *powerTimerNew(XfcePanelPlugin *plugin);
-void powerTimerDestructor(PowerTimer *powerTimer);
+PowerTimer *powerTimerCreate(XfcePanelPlugin *plugin);
+void powerTimerDestroy(PowerTimer *powerTimer);
 
 void removeTimer(PowerTimer *timer);
 void setTimer(PowerTimer *timer, guint timeout);

@@ -8,21 +8,20 @@
 #include "about-dialog.h"
 #include "configure-dialog.h"
 
-static void orientationChanged(XfcePanelPlugin *plugin,
-                               GtkOrientation orientation,
-                               PowerTimer *powerTimer);
+static void orientationChangeHandler(XfcePanelPlugin *plugin,
+                                     GtkOrientation orientation,
+                                     PowerTimer *powerTimer);
 
-static gboolean sizeChanged(XfcePanelPlugin *plugin,
-                            gint size,
-                            PowerTimer *powerTimer);
+static gboolean sizeChangeHandler(XfcePanelPlugin *plugin,
+                                  gint size,
+                                  PowerTimer *powerTimer);
 
-static void powertimer_constructor(XfcePanelPlugin *plugin)
+static void pluginCreate(XfcePanelPlugin *plugin)
 {
     xfce_textdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
 
-    PowerTimer *powerTimer = powerTimerNew(plugin);
+    PowerTimer *powerTimer = powerTimerCreate(plugin);
 
-    printf("Value %u\n", powerTimer->timerId);
     /* add the ebox to the panel */
     gtk_container_add(GTK_CONTAINER(plugin), powerTimer->ebox);
 
@@ -30,13 +29,13 @@ static void powertimer_constructor(XfcePanelPlugin *plugin)
     xfce_panel_plugin_add_action_widget(plugin, powerTimer->ebox);
 
     g_signal_connect(G_OBJECT(plugin), "free-data",
-                     G_CALLBACK(powerTimerDestructor), powerTimer);
+                     G_CALLBACK(powerTimerDestroy), powerTimer);
 
     g_signal_connect(G_OBJECT(plugin), "size-changed",
-                     G_CALLBACK(sizeChanged), powerTimer);
+                     G_CALLBACK(sizeChangeHandler), powerTimer);
 
     g_signal_connect(G_OBJECT(plugin), "orientation-changed",
-                     G_CALLBACK(orientationChanged), powerTimer);
+                     G_CALLBACK(orientationChangeHandler), powerTimer);
 
     /* show the about menu item and connect signal */
     xfce_panel_plugin_menu_show_about(plugin);
@@ -45,27 +44,26 @@ static void powertimer_constructor(XfcePanelPlugin *plugin)
 
     xfce_panel_plugin_menu_show_configure(plugin);
     g_signal_connect_swapped(plugin, "configure-plugin",
-                     G_CALLBACK(configureDialog), powerTimer);
+                             G_CALLBACK(configureDialog), powerTimer);
     g_signal_connect_swapped(G_OBJECT(plugin), "button_press_event",
-                     G_CALLBACK(configureDialog), powerTimer);
-
+                             G_CALLBACK(configureDialog), powerTimer);
 }
 
-XFCE_PANEL_PLUGIN_REGISTER(powertimer_constructor)
+XFCE_PANEL_PLUGIN_REGISTER(pluginCreate)
 
 static void
-orientationChanged(XfcePanelPlugin *plugin,
-                   GtkOrientation orientation,
-                   PowerTimer *powerTimer)
+orientationChangeHandler(XfcePanelPlugin *plugin,
+                         GtkOrientation orientation,
+                         PowerTimer *powerTimer)
 {
     /* change the orientation of the box */
     gtk_orientable_set_orientation(GTK_ORIENTABLE(powerTimer->hbox), orientation);
 }
 
 static gboolean
-sizeChanged(XfcePanelPlugin *plugin,
-            gint size,
-            PowerTimer *powerTimer)
+sizeChangeHandler(XfcePanelPlugin *plugin,
+                  gint size,
+                  PowerTimer *powerTimer)
 {
     GtkOrientation orientation;
 

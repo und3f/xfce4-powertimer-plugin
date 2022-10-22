@@ -14,6 +14,63 @@
 #include "constants.h"
 #include "power-timer.h"
 
+static void checkPoweroffTime(PowerTimer *this);
+static void handleStopTimerClick(GtkWidget *button, PowerTimer *powerTimer);
+static int tickCallback(PowerTimer *this);
+static void shutdown(void);
+
+PowerTimer *powerTimerCreate(XfcePanelPlugin *plugin)
+{
+    PowerTimer *this = g_slice_new0(PowerTimer);
+    this->plugin = plugin;
+
+    this->ebox = gtk_event_box_new();
+
+    this->hbox = gtk_box_new(
+        xfce_panel_plugin_get_orientation(plugin),
+        GTK_BOX_SPACING);
+    gtk_container_add(GTK_CONTAINER(this->ebox), this->hbox);
+
+    this->icon = xfce_panel_image_new_from_source(ICON_NAME);
+
+    gint size = xfce_panel_plugin_get_size(this->plugin);
+    xfce_panel_image_set_size(XFCE_PANEL_IMAGE(this->icon), size);
+
+    this->progressBar = gtk_progress_bar_new();
+    gtk_orientable_set_orientation(GTK_ORIENTABLE(this->progressBar),
+                                   GTK_ORIENTATION_VERTICAL);
+
+    gtk_box_pack_start(GTK_BOX(this->hbox), this->icon, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(this->hbox), this->progressBar, FALSE, FALSE, 0);
+
+    this->poweroffTime = NULL;
+
+    this->stopTimer = gtk_menu_item_new_with_label(_("Stop timer"));
+    gtk_widget_set_sensitive(this->stopTimer, FALSE);
+    gtk_widget_show(this->stopTimer);
+    g_signal_connect(G_OBJECT(this->stopTimer), "activate",
+                     G_CALLBACK(handleStopTimerClick), this);
+    xfce_panel_plugin_menu_insert_item(plugin, GTK_MENU_ITEM(this->stopTimer));
+
+    gtk_widget_show_all(this->ebox);
+
+    this->timerId = g_timeout_add_seconds(TICK, (GSourceFunc)tickCallback, this);
+
+    return this;
+}
+
+void powerTimerDestroy(PowerTimer *this)
+{
+    gtk_widget_destroy(this->hbox);
+
+    g_slice_free(PowerTimer, this);
+}
+
+void handleStopTimerClick(GtkWidget *button, PowerTimer *powerTimer)
+{
+    removeTimer(powerTimer);
+}
+
 static void shutdown()
 {
     bool allow_save = TRUE;
@@ -44,8 +101,10 @@ static void shutdown()
         NULL,
         &err);
 
-    if (!result) {
-        if (err != NULL) {
+    if (!result)
+    {
+        if (err != NULL)
+        {
             xfce_dialog_show_error(NULL, err, "Failed to send shutdown command");
             g_clear_error(&err);
             return;
@@ -53,67 +112,53 @@ static void shutdown()
     }
 }
 
-static int timerCallback(PowerTimer *timer)
+static void checkPoweroffTime(PowerTimer *this)
 {
-    timer->timerId = 0;
-    
-    shutdown();
-
-    return FALSE;
-}
-
-void removeTimer(PowerTimer *timer)
-{
-    if (timer->timerId != 0)
+    if (NULL == this->poweroffTime)
     {
-        g_source_remove(timer->timerId);
+        return;
     }
-    timer->timerId = 0;
+
+    gtk_progress_bar_pulse(GTK_PROGRESS_BAR(this->progressBar));
+
+    GDateTime *now = g_date_time_new_now_local();
+    GTimeSpan timeDiff = g_date_time_difference(this->poweroffTime, now);
+    g_date_time_unref(now);
+
+    if (timeDiff <= 0)
+    {
+        // TODO: ask for shutdown
+        shutdown();
+    }
 }
 
-void setTimer(PowerTimer *timer, guint timeout)
+static int tickCallback(PowerTimer *this)
+{
+    checkPoweroffTime(this);
+
+    return TRUE;
+}
+
+void removeTimer(PowerTimer *this)
+{
+    if (NULL != this->poweroffTime)
+    {
+        g_date_time_unref(this->poweroffTime);
+        this->poweroffTime = NULL;
+    }
+
+    gtk_widget_set_sensitive(this->stopTimer, FALSE);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(this->progressBar), 0);
+}
+
+void setTimer(PowerTimer *this, guint timeout)
 {
     printf("Set timeout: %u\n", timeout);
-    printf("previous: %u\n", timer->timerId);
-    removeTimer(timer);
+    removeTimer(this);
 
-    timer->timerId = g_timeout_add_seconds(timeout, (GSourceFunc) timerCallback, timer);
-}
+    gtk_widget_set_sensitive(this->stopTimer, TRUE);
 
-PowerTimer *powerTimerNew(XfcePanelPlugin *plugin)
-{
-    PowerTimer *powertimer = g_slice_new0(PowerTimer);
-    powertimer->plugin = plugin;
-
-    powertimer->ebox = gtk_event_box_new();
-
-    powertimer->hbox = gtk_box_new(
-        xfce_panel_plugin_get_orientation(plugin),
-        GTK_BOX_SPACING);
-    gtk_container_add(GTK_CONTAINER(powertimer->ebox), powertimer->hbox);
-
-    powertimer->icon = xfce_panel_image_new_from_source(ICON_NAME);
-
-    gint size = xfce_panel_plugin_get_size(powertimer->plugin);
-    xfce_panel_image_set_size(XFCE_PANEL_IMAGE(powertimer->icon), size);
-
-    gtk_box_pack_start(GTK_BOX(powertimer->hbox), powertimer->icon, FALSE, FALSE, 0);
-
-    GtkWidget *stopTimer = gtk_menu_item_new_with_label(_("Stop timer"));
-    gtk_widget_set_sensitive(stopTimer, FALSE);
-    gtk_widget_show(stopTimer);
-    g_signal_connect(G_OBJECT(stopTimer), "activate",
-                     G_CALLBACK(removeTimer), powertimer);
-    xfce_panel_plugin_menu_insert_item(plugin, GTK_MENU_ITEM(stopTimer));
-
-    gtk_widget_show_all(powertimer->ebox);
-
-    return powertimer;
-}
-
-void powerTimerDestructor(PowerTimer *powerTimer)
-{
-    gtk_widget_destroy(powerTimer->hbox);
-
-    g_slice_free(PowerTimer, powerTimer);
+    GDateTime *now = g_date_time_new_now_local();
+    this->poweroffTime = g_date_time_add_seconds(now, timeout);
+    g_date_time_unref(now);
 }
